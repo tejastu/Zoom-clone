@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Document</title>
+      <script>
+         const ROOM_ID = "<%= roomId %>";
+      </script>
+      <link
+         rel="stylesheet"
+         href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+         crossorigin="anonymous"
+      />
+      <script
+         defer
+         src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"
+      ></script>
+      <script
+         src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+         crossorigin="anonymous"
+      ></script>
+      <script
+         src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+         crossorigin="anonymous"
+      ></script>
+      <script src="https://floating-fortress-55753.herokuapp.com/socket.io/socket.io.js"></script>
+      <script src="/socket.io/socket.io.js" defer></script>
+      <link rel="stylesheet" href="style.css" />
+      <script src="https://kit.fontawesome.com/c939d0e917.js"></script>
+      <script src="script.js" defer></script>
+
+      <style>
+         #video-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+         }
+         video {
+            height: 300px;
+            width: 400px;
+            object-fit: cover;
+            padding: 8px;
+         }
+         * {
+            font-family: Verdana, Arial, sans-serif;
+         }
+         a:link {
+            color: #000;
+            text-decoration: none;
+         }
+         a:visited {
+            color: #000;
+         }
+         a:hover {
+            color: #33f;
+         }
+         .button {
+            background: -webkit-linear-gradient(top, #008dfd 0, #0370ea 100%);
+            border: 1px solid #076bd2;
+            border-radius: 3px;
+            color: #fff;
+            display: none;
+            font-size: 13px;
+            font-weight: bold;
+            line-height: 1.3;
+            padding: 8px 25px;
+            text-align: center;
+            text-shadow: 1px 1px 1px #076bd2;
+            letter-spacing: normal;
+         }
+         .center {
+            padding: 10px;
+            text-align: center;
+         }
+         .final {
+            color: black;
+            padding-right: 3px;
+         }
+         .interim {
+            color: gray;
+         }
+         .info {
+            font-size: 14px;
+            text-align: center;
+            color: #777;
+            display: none;
+         }
+         .right {
+            float: right;
+         }
+
+         .sidebyside {
+            display: inline-block;
+            width: 45%;
+            min-height: 40px;
+            text-align: left;
+            vertical-align: top;
+         }
+         #micro #headline {
+            font-size: 30px;
+            font-weight: 300;
+         }
+         #info {
+            font-size: 20px;
+            text-align: center;
+            color: #777;
+            visibility: hidden;
+         }
+         #results {
+            font-size: 14px;
+            font-weight: bold;
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: left;
+            min-height: 150px;
+            height: 150px;
+         }
+         #start_button {
+            border: 0;
+            background-color: transparent;
+            padding: 0;
+         }
+         #userT {
+            background: red;
+            width: 400px;
+            margin: 0 auto;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+         }
+      </style>
+   </head>
+   <body>
+      <div class="main">
+         <div class="main__left">
+            <div class="main__videos">
+               <div id="video-grid"></div>
+            </div>
+            <div class="main__controls">
+               <div class="main__controls__block">
+                  <div
+                     onclick="muteUnmute()"
+                     class="main__controls__button main__mute_button"
+                  >
+                     <i class="fas fa-microphone"></i>
+                     <span>Mute</span>
+                  </div>
+                  <div
+                     onclick="playStop()"
+                     class="main__controls__button main__video_button"
+                  >
+                     <i class="fas fa-video"></i>
+                     <span>Stop Video</span>
+                  </div>
+               </div>
+               <div class="main__controls__block">
+                  <div class="main__controls__button">
+                     <i class="fas fa-shield-alt"></i>
+                     <span>Security</span>
+                  </div>
+                  <div class="main__controls__button">
+                     <i class="fas fa-user-friends"></i>
+                     <span>Participants</span>
+                  </div>
+                  <div class="main__controls__button">
+                     <i class="fas fa-comment-alt"></i>
+                     <span>Chat</span>
+                  </div>
+               </div>
+               <div class="main__controls__block">
+                  <div class="main__controls__button">
+                     <span class="leave_meeting">Leave Meeting</span>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="main__right">
+            <div class="main__header">
+               <h6>Chat</h6>
+            </div>
+            <div class="main__chat_window">
+               <ul class="messages"></ul>
+            </div>
+            <div class="main__message_container">
+               <input
+                  id="chat_message"
+                  type="text"
+                  placeholder="Type message here..."
+               />
+            </div>
+            <div class="mic-div">
+               <div id="info" style="margin-top: 150px">
+                  <p id="info_start" style="font-size: 17px">
+                     Click on the microphone icon
+                  </p>
+
+                  <p id="info_speak_now">Please Speak.</p>
+
+                  <p id="info_no_speech">
+                     No speech was detected. You may need to adjust your
+                     <a
+                        href="//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892"
+                     >
+                        microphone settings</a
+                     >.
+                  </p>
+
+                  <p id="info_no_microphone" style="display: none">
+                     No microphone was found. Ensure that a microphone is
+                     installed and that
+                     <a
+                        href="//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892"
+                     >
+                        microphone settings</a
+                     >
+                     are configured correctly.
+                  </p>
+
+                  <p id="info_allow">
+                     Click the "Allow" button above to enable your microphone.
+                  </p>
+
+                  <p id="info_denied">
+                     Permission to use microphone was denied.
+                  </p>
+
+                  <p id="info_blocked">
+                     Permission to use microphone is blocked. To change, go to
+                     chrome://settings/contentExceptions#media-stream
+                  </p>
+
+                  <p id="info_upgrade">
+                     Web Speech API is not supported by this browser. Upgrade to
+                     <a href="//www.google.com/chrome">Chrome</a> version 25 or
+                     later.
+                  </p>
+               </div>
+               <div class="right">
+                  <button
+                     id="start_button"
+                     style="font-size: larger"
+                     onclick="startButton(event)"
+                  >
+                     <img
+                        id="start_img"
+                        style="margin-right: 23vh"
+                        src="./mic.gif"
+                        alt="Start"
+                     />
+                  </button>
+               </div>
+               <div id="results" style="width: 50%; margin: 20px auto">
+                  <span
+                     id="final_span"
+                     class="final"
+                     style="font-size: 22px"
+                  ></span>
+                  <span
+                     id="interim_span"
+                     class="interim"
+                     style="font-size: 22px"
+                  ></span>
+               </div>
+               <div class="center">
+                  <p></p>
+                  <div id="div_language">
+                     <select
+                        id="select_language"
+                        style="font-size: 22px"
+                        onchange="updateCountry()"
+                     ></select>
+                     &nbsp;&nbsp;
+                     <select
+                        id="select_dialect"
+                        style="font-size: 22px"
+                     ></select>
+                  </div>
+               </div>
+               <!-- All translated data will be here  -->
+               <div id="userT">
+                  <span class="transfer" style="font-size: 22px"></span>
+
+                  <span class="pretransfer"></span>
+               </div>
+               <br />
+               <p
+                  id="user"
+                  style="font-size: 22px; font-style: italic; font-weight: 100"
+               ></p>
+            </div>
+         </div>
+      </div>
+   </body>
+
+   <script>
+      // const io = require("socket.io");
+      const socket1 = io("https://floating-fortress-55753.herokuapp.com/");
+      // document.addEventListener("DOMContentLoaded", () => {
+      const nme = prompt("enter your name");
+      let bar = document.getElementsByClassName("transfer");
+      let spacebar = document.getElementsByClassName("pretransfer");
+      let user = document.getElementById("user");
+
+      //1
+      socket1.emit("new", nme);
+      //2
+      socket1.on("lets-start", (na) => {
+         console.log("newly connected user is ", na);
+      });
+      //3
+      socket1.on(`client-receive`, (tata) => {
+         console.log(`data id being received`);
+         bar[0].innerHTML = tata.F;
+         // spacebar[0].innerHTML = tata.I;
+         user.innerHTML = tata.user;
+      });
+      // });
+
+      var langs = [
+         [
+            "English",
+            ["en-AU", "Australia"],
+            ["en-CA", "Canada"],
+            ["en-IN", "India"],
+            ["en-GB", "United Kingdom"],
+            ["en-US", "United States"],
+         ],
+         //  ['ગુજરાતી',           ['gu-IN']],
+         //  ['मराठी',             ['mr-IN']],
+         ["हिन्दी", ["hi-IN"]],
+      ];
+
+      for (var i = 0; i < langs.length; i++) {
+         select_language.options[i] = new Option(langs[i][0], i);
+      }
+      select_language.selectedIndex = 0;
+      updateCountry();
+      select_dialect.selectedIndex = 2;
+      showInfo("info_start");
+
+      function updateCountry() {
+         for (var i = select_dialect.options.length - 1; i >= 0; i--) {
+            select_dialect.remove(i);
+         }
+         var list = langs[select_language.selectedIndex];
+         for (var i = 1; i < list.length; i++) {
+            select_dialect.options.add(new Option(list[i][1], list[i][0]));
+         }
+         select_dialect.style.visibility =
+            list[1].length == 1 ? "hidden" : "visible";
+      }
+
+      var create_email = false;
+      var final_transcript = "";
+      var recognizing = false;
+      var ignore_onend;
+      var start_timestamp;
+
+      if (!("webkitSpeechRecognition" in window)) {
+         upgrade();
+      } else {
+         start_button.style.display = "inline-block";
+         // this is webspeech api
+         var recognition = new webkitSpeechRecognition();
+         recognition.continuous = true;
+         recognition.interimResults = true;
+
+         recognition.onstart = function () {
+            console.log("Recognition is started");
+            recognizing = true;
+            showInfo("info_speak_now");
+            start_img.src = "mic-animate.gif";
+         };
+
+         recognition.onerror = function (event) {
+            if (event.error == "no-speech") {
+               start_img.src = "mic.gif";
+               showInfo("info_no_speech");
+               ignore_onend = true;
+            }
+            if (event.error == "audio-capture") {
+               start_img.src = "mic.gif";
+               showInfo("info_no_microphone");
+               ignore_onend = true;
+            }
+            if (event.error == "not-allowed") {
+               if (event.timeStamp - start_timestamp < 100) {
+                  showInfo("info_blocked");
+               } else {
+                  showInfo("info_denied");
+               }
+               ignore_onend = true;
+            }
+         };
+
+         recognition.onend = function () {
+            console.log("Recognition is ended");
+            recognizing = false;
+            if (ignore_onend) {
+               return;
+            }
+            start_img.src = "mic.gif";
+            if (!final_transcript) {
+               showInfo("info_start");
+               return;
+            }
+            showInfo("");
+            if (window.getSelection) {
+               window.getSelection().removeAllRanges();
+               var range = document.createRange();
+               range.selectNode(document.getElementById("final_span"));
+               window.getSelection().addRange(range);
+            }
+            if (create_email) {
+               create_email = false;
+               createEmail();
+            }
+         };
+
+         // main function for giving recognised sentences
+
+         recognition.onresult = function (event) {
+            var interim_transcript = "";
+            for (var i = event.resultIndex; i < event.results.length; ++i) {
+               if (event.results[i].isFinal) {
+                  final_transcript += event.results[i][0].transcript;
+               } else {
+                  interim_transcript += event.results[i][0].transcript;
+               }
+            }
+            final_transcript = capitalize(final_transcript);
+            let final = linebreak(final_transcript);
+            let prefinal = linebreak(interim_transcript);
+            final_span.innerHTML = final;
+            interim_span.innerHTML = prefinal;
+
+            // socket.emit('send' ,{ FT: final_transcript, IT: interim_transcript});
+
+            if (final_transcript || interim_transcript) {
+               showButtons("inline-block");
+            }
+         };
+      }
+
+      function upgrade() {
+         start_button.style.visibility = "hidden";
+         showInfo("info_upgrade");
+      }
+
+      var two_line = /\n\n/g;
+      var one_line = /\n/g;
+      function linebreak(s) {
+         return s.replace(two_line, "<p></p>").replace(one_line, "<br>");
+      }
+
+      var first_char = /\S/;
+      function capitalize(s) {
+         return s.replace(first_char, function (m) {
+            return m.toUpperCase();
+         });
+      }
+
+      function createEmail() {
+         var n = final_transcript.indexOf("\n");
+         if (n < 0 || n >= 80) {
+            n = 40 + final_transcript.substring(40).indexOf(" ");
+         }
+         var subject = encodeURI(final_transcript.substring(0, n));
+         var body = encodeURI(final_transcript.substring(n + 1));
+         window.location.href = "mailto:?subject=" + subject + "&body=" + body;
+      }
+
+      function copyButton() {
+         if (recognizing) {
+            recognizing = false;
+            recognition.stop();
+         }
+         copy_button.style.display = "none";
+         copy_info.style.display = "inline-block";
+         showInfo("");
+      }
+
+      function emailButton() {
+         if (recognizing) {
+            create_email = true;
+            recognizing = false;
+            recognition.stop();
+         } else {
+            createEmail();
+         }
+         email_button.style.display = "none";
+         email_info.style.display = "inline-block";
+         showInfo("");
+      }
+
+      function startButton(event) {
+         if (recognizing) {
+            console.log("is ended and sending data to server to");
+            let langgs = document.getElementById("select_language").value;
+            console.log(langs[langgs][0]);
+            socket1.emit("send-to-server", {
+               FT: final_transcript,
+               language: langs[langgs][0],
+            });
+
+            recognition.stop();
+
+            flag = 0;
+            return;
+         }
+         console.log(" is started");
+         final_transcript = "";
+         recognition.lang = select_dialect.value;
+         recognition.start();
+         ignore_onend = false;
+         final_span.innerHTML = "";
+         interim_span.innerHTML = "";
+         start_img.src = "mic-slash.gif";
+         showInfo("info_allow");
+         showButtons("none");
+         start_timestamp = event.timeStamp;
+      }
+
+      function showInfo(s) {
+         if (s) {
+            for (
+               var child = info.firstChild;
+               child;
+               child = child.nextSibling
+            ) {
+               if (child.style) {
+                  child.style.display = child.id == s ? "inline" : "none";
+               }
+            }
+            info.style.visibility = "visible";
+         } else {
+            info.style.visibility = "hidden";
+         }
+      }
+
+      var current_style;
+      function showButtons(style) {
+         if (style == current_style) {
+            return;
+         }
+         // current_style = style;
+         // copy_button.style.display = style;
+         // email_button.style.display = style;
+         // copy_info.style.display = 'none';
+         // email_info.style.display = 'none';
+      }
+
+      // text disappear after 5 sec
+
+      $(function () {
+         setTimeout(function () {
+            $("#userT").fadeOut(1500);
+         }, 5000);
+      });
+
+      // -----------------------------------------------------------------------------
+   </script>
+</html>
