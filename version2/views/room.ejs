@@ -116,8 +116,11 @@
             border: 1px solid #ddd;
             padding: 15px;
             text-align: left;
-            min-height: 150px;
-            height: 150px;
+            /* min-height: 150px; */
+            height: auto;
+            width: 80%;
+            margin: 20px auto;
+            margin-top: 60px;
          }
          #start_button {
             border: 0;
@@ -131,6 +134,83 @@
             color: #fff;
             padding: 10px;
             text-align: center;
+         }
+         .glow-on-hover {
+            width: 120px;
+            height: 50px;
+            border: none;
+            outline: none;
+            color: #fff;
+            background: #111;
+            cursor: pointer;
+            position: relative;
+            z-index: 0;
+            /* border-radius: 10px; */
+         }
+
+         .glow-on-hover:before {
+            content: "";
+            background: linear-gradient(
+               45deg,
+               #ff0000,
+               #ff7300,
+               #fffb00,
+               #48ff00,
+               #00ffd5,
+               #002bff,
+               #7a00ff,
+               #ff00c8,
+               #ff0000
+            );
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            background-size: 400%;
+            z-index: -1;
+            filter: blur(5px);
+            width: calc(100% + 4px);
+            height: calc(100% + 4px);
+            animation: glowing 20s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            /* border-radius: 10px; */
+         }
+
+         .glow-on-hover:active {
+            color: #000;
+         }
+
+         .glow-on-hover:active:after {
+            background: transparent;
+         }
+
+         .glow-on-hover:hover:before {
+            opacity: 1;
+         }
+
+         .glow-on-hover:after {
+            z-index: -1;
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #111;
+            left: 0;
+            top: 0;
+            border: none;
+            /* border-radius: 10px; */
+         }
+
+         @keyframes glowing {
+            0% {
+               background-position: 0 0;
+            }
+            50% {
+               background-position: 400% 0;
+            }
+            100% {
+               background-position: 0 0;
+            }
          }
       </style>
    </head>
@@ -165,7 +245,6 @@
             </div>
          </div>
 
-
          <!-- chatting section -->
          <div class="main__right">
             <div class="chat-section">
@@ -183,11 +262,11 @@
                   />
                </div>
             </div>
-            
+
             <div class="mic-div">
-               <div id="info" style="margin-top: 0px">
-                  <p id="info_start" style="font-size: 17px">
-                     Click on the microphone icon
+               <div id="info" style="margin-top: 8px">
+                  <p id="info_start" style="font-size: 17px; color: white">
+                     Click on the Start Button
                   </p>
 
                   <p id="info_speak_now">Please Speak.</p>
@@ -231,31 +310,39 @@
                      later.
                   </p>
                </div>
-               <div class="right">
+               <div
+                  class="right"
+                  style="margin-top: 8px; margin-right: 140px; border: none"
+               >
                   <button
                      id="start_button"
-                     style="font-size: larger"
+                     style="font-size: larger; border: none"
                      onclick="startButton(event)"
+                     class="glow-on-hover"
+                     type="button"
                   >
-                     <img
+                     <!-- <img
                         id="start_img"
                         style="margin-right: 23vh"
-                        src="./mic.gif"
+                        src="start.png"
                         alt="Start"
-                     />
+                     /> -->
+                     Start
                   </button>
                </div>
-               <div id="results" style="width: 50%; margin: 20px auto">
-                  <span
-                     id="final_span"
-                     class="final"
-                     style="font-size: 22px"
-                  ></span>
-                  <span
-                     id="interim_span"
-                     class="interim"
-                     style="font-size: 22px"
-                  ></span>
+               <div class="recog" style="height: 40%; margin-top: 70px">
+                  <div id="results">
+                     <span
+                        id="final_span"
+                        class="final"
+                        style="font-size: 15px"
+                     ></span>
+                     <span
+                        id="interim_span"
+                        class="interim"
+                        style="font-size: 15px"
+                     ></span>
+                  </div>
                </div>
                <div class="center">
                   <p></p>
@@ -318,8 +405,8 @@
             ["en-AU", "Australia"],
             ["en-CA", "Canada"],
             ["en-IN", "India"],
-            ["en-GB", "United Kingdom"],
-            ["en-US", "United States"],
+            // ["en-GB", "United Kingdom"],
+            // ["en-US", "United States"],
          ],
          //  ['ગુજરાતી',           ['gu-IN']],
          //  ['मराठी',             ['mr-IN']],
@@ -511,7 +598,7 @@
          ignore_onend = false;
          final_span.innerHTML = "";
          interim_span.innerHTML = "";
-         start_img.src = "mic-slash.gif";
+         start_img.src = "start.png";
          showInfo("info_allow");
          showButtons("none");
          start_timestamp = event.timeStamp;
@@ -557,3 +644,4 @@
       // -----------------------------------------------------------------------------
    </script>
 </html>
+
