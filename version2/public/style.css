@@ -146,9 +146,11 @@ video {
 }
 
 .main__message_container {
+
     padding: 12px 15px;
     display: flex;
 }
+
 
 /* .h5, h5 {
     font-size: 1rem;
