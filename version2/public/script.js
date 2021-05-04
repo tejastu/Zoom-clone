@@ -3,8 +3,8 @@ const videoGrid = document.getElementById("video-grid");
 const myPeer = new Peer(undefined, {
    path: "/peerjs",
    host: "/",
-   port: "443",
-//   port: '3001'
+   // port: "443",
+  port: '3001'
 });
 let myVideoStream;
 const myVideo = document.createElement("video");
@@ -32,14 +32,24 @@ navigator.mediaDevices
       // input value
       let text = $("input");
       // when press enter send message
+      $("#send-but").click(function (e) {
+         if (text.val().length !== 0) {
+            $("ul").append(`<li class="messages-me" style ><b>user</b><br/>${text.val()}</li>`);
+            scrollToBottom();
+            socket.emit("message", text.val());
+            text.val("");
+         }
+      });
       $("html").keydown(function (e) {
          if (e.which == 13 && text.val().length !== 0) {
+            $("ul").append(`<li class="messages-me" style ><b>user</b><br/>${text.val()}</li>`);
+            scrollToBottom();
             socket.emit("message", text.val());
             text.val("");
          }
       });
       socket.on("createMessage", (message) => {
-         $("ul").append(`<li class="message"><b>user</b><br/>${message}</li>`);
+         $("ul").append(`<li class="messages"><b>user</b><br/>${message}</li>`);
          scrollToBottom();
       });
    });

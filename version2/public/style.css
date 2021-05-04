@@ -1,18 +1,28 @@
-/* *{
-    background-color: #242324;
-} */
-
+body::-webkit-scrollbar {
+    width: 12px;               /* width of the entire scrollbar */
+  }
+  
+  body::-webkit-scrollbar-track {
+    background: orange;        /* color of the tracking area */
+  }
+  
+  body::-webkit-scrollbar-thumb {
+    background-color: blue;    /* color of the scroll thumb */
+    border-radius: 20px;       /* roundness of the scroll thumb */
+    border: 3px solid orange;  /* creates padding around scroll thumb */
+}
 
 .main {
     height: 100vh;
     display: flex;
+    overflow: hidden;
 }
 
 .main__left {
     flex: 0.8;
     display: flex;
     flex-direction: column;
-    background-color: black;
+    background-color: #212121;
 }
 
 .main__right {
@@ -24,14 +34,16 @@
     background-color: black;
     display: flex;
     justify-content: center;
+    border-radius: 50px;
     align-items: center;
     padding: 40px;
+    margin-top: 15px;
+    margin-left: 15px;
 }
-
-
 .main__right {
-    background-color: #242324;
-    border-left: 1px solid #3D3D42;
+    display: flex;
+    flex-direction: column;
+    background-color: #212121;
 }
 
 .main__controls {
@@ -39,7 +51,6 @@
     color: #ffffff;
     border-radius: 35px;
     height: auto;
-    /* justify-content: center; */
     width: 550px;
     display: flex;
     align-content: center;
@@ -48,6 +59,7 @@
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 15px;
+    margin-top: 15px;
 }
 .main__controls__block1{
     display: flex;
@@ -97,28 +109,76 @@
     color: #F5F5F5;
     text-align: center; 
  } 
+.fab, .far {
+    font-weight: 400;
+    margin-right: 2px;
+}
+ .h6, h6 {
+    font-size: 1.1rem;
+    background-color: #30b730;
+    width: 126px;
+    border-radius: 10px;
+    height: 50px;
+    margin: 0px auto 0px auto;
+    padding-top: 14px;
+}
 
  .main__chat_window { 
+    margin-top: 5px;    
     flex-grow: 1;
     overflow-y: auto;
     height: 60%;
+    width: auto;
+    padding-right: 8px;
+    padding-bottom: 5px;
+
 } 
 
 .messages{
     color: white;
     list-style: none;
 }
+.messages-me{
+    color: white;
+    list-style: none;
+    text-align: right;
+}
 
 .main__message_container {
-    padding: 22px 12px;
+    padding: 12px 15px;
     display: flex;
 }
+
+/* .h5, h5 {
+    font-size: 1rem;
+    background-color: #30b730;
+    width: 90px;
+    color: white;
+    border-radius: 10px;
+    height: 35px;
+    margin: 0px auto 0px 20px;
+    padding: 8px 0px 0px 25px;
+} */
 
 .main__message_container input {
     flex-grow: 1;
     background-color: transparent;
     border: none;
     color: #F5F5F5;
+    margin-left: 2px;
+}
+
+#send-but {
+    font-size: 1.1rem;
+    background-color: #30b730;
+    width: 90px;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    height: 35px;
+    margin: 0px 0px 0px 20px;
+    outline: none;
+    /* padding: 1px 0px 0px 0px; */
 }
 
 .leave_meeting {
