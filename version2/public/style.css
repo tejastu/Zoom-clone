@@ -1,16 +1,3 @@
-body::-webkit-scrollbar {
-    width: 12px;               /* width of the entire scrollbar */
-  }
-  
-  body::-webkit-scrollbar-track {
-    background: orange;        /* color of the tracking area */
-  }
-  
-  body::-webkit-scrollbar-thumb {
-    background-color: blue;    /* color of the scroll thumb */
-    border-radius: 20px;       /* roundness of the scroll thumb */
-    border: 3px solid orange;  /* creates padding around scroll thumb */
-}
 
 .main {
     height: 100vh;
@@ -26,7 +13,7 @@ body::-webkit-scrollbar {
 }
 
 .main__right {
-    flex: 0.2
+   flex: 0.2;
 }
 
 .main__videos {
@@ -64,47 +51,47 @@ body::-webkit-scrollbar {
 .main__controls__block1{
     display: flex;
     margin-right: -10px;
+
 }
 .main__controls__block2 {
-    display: flex;
-    margin-left: -10px;
+   display: flex;
+   margin-left: -10px;
 }
 
 .main__controls__button {
-    background-color: #343434;
-    margin-left: 5px;
-    margin-right: 5px;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 8px 10px;
-    min-width: 80px;
-    cursor: pointer;
+   background-color: #343434;
+   margin-left: 5px;
+   margin-right: 5px;
+   border-radius: 5px;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   padding: 8px 10px;
+   min-width: 80px;
+   cursor: pointer;
 }
 
 .main__controls__button:hover {
-    /* background-color: #343434; */
-    border-radius: 8px;
-    border-color: #ffffff;
+   /* background-color: #343434; */
+   border-radius: 8px;
+   border-color: #ffffff;
 }
 
 .main__controls__button i {
-    font-size: 24px;
+   font-size: 24px;
 }
 
 .main__right {
-    
-    display: flex;
-    flex-direction: column;
+   display: flex;
+   flex-direction: column;
 }
 
-.chat-section{
-    height: 50%;
+.chat-section {
+   height: 50%;
 }
 
- .main__header { 
+.main__header { 
      padding-top: 5px;
     color: #F5F5F5;
     text-align: center; 
@@ -113,7 +100,7 @@ body::-webkit-scrollbar {
     font-weight: 400;
     margin-right: 2px;
 }
- .h6, h6 {
+.h6, h6 {
     font-size: 1.1rem;
     background-color: #30b730;
     width: 126px;
@@ -123,7 +110,7 @@ body::-webkit-scrollbar {
     padding-top: 14px;
 }
 
- .main__chat_window { 
+.main__chat_window { 
     margin-top: 5px;    
     flex-grow: 1;
     overflow-y: auto;
@@ -134,9 +121,10 @@ body::-webkit-scrollbar {
 
 } 
 
-.messages{
-    color: white;
-    list-style: none;
+
+.messages {
+   color: white;
+   list-style: none;
 }
 .messages-me{
     color: white;
@@ -147,7 +135,7 @@ body::-webkit-scrollbar {
 .main__message_container {
     padding: 12px 15px;
     display: flex;
-}
+
 
 /* .h5, h5 {
     font-size: 1rem;
@@ -179,13 +167,20 @@ body::-webkit-scrollbar {
     margin: 0px 0px 0px 20px;
     outline: none;
     /* padding: 1px 0px 0px 0px; */
+
 }
 
 .leave_meeting {
-    color: white;
+   color: white;
 }
 
-.unmute, .stop {
-    color: #CC3B33;
+.unmute,
+.stop {
+   color: #cc3b33;
 }
+.mic-div {
+   background: #606060;
+   height: 50%;
+}
+
 
