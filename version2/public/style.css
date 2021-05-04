@@ -16,6 +16,16 @@
    flex: 0.2;
 }
 
+video {
+    height: 300px;
+    width: 400px;
+    object-fit: cover;
+    padding: 8px;
+    margin: 30px;
+    border-radius: 25px;
+
+}
+
 .main__videos {
     flex-grow: 1;
     background-color: black;
@@ -25,7 +35,7 @@
     align-items: center;
     padding: 40px;
     margin-top: 15px;
-    margin-left: 15px;
+    margin-left: 10px;
 }
 .main__right {
     display: flex;
@@ -88,11 +98,15 @@
 }
 
 .chat-section {
-   height: 50%;
+    height: 40%;
+    background-color: #606060;
+    border-radius: 40px;
+    margin: 10px;
+    margin-bottom: 15px;
 }
 
 .main__header { 
-     padding-top: 5px;
+     padding-top: 8px;
     color: #F5F5F5;
     text-align: center; 
  } 
@@ -102,7 +116,7 @@
 }
 .h6, h6 {
     font-size: 1.1rem;
-    background-color: #30b730;
+    background-color: black;
     width: 126px;
     border-radius: 10px;
     height: 50px;
@@ -110,15 +124,14 @@
     padding-top: 14px;
 }
 
-.main__chat_window { 
-    margin-top: 5px;    
+.main__chat_window {
+    margin-top: 5px;
     flex-grow: 1;
     overflow-y: auto;
-    height: 60%;
+    height: 55%;
     width: auto;
     padding-right: 8px;
     padding-bottom: 5px;
-
 } 
 
 
@@ -135,7 +148,7 @@
 .main__message_container {
     padding: 12px 15px;
     display: flex;
-
+}
 
 /* .h5, h5 {
     font-size: 1rem;
@@ -158,7 +171,7 @@
 
 #send-but {
     font-size: 1.1rem;
-    background-color: #30b730;
+    background-color: black;
     width: 90px;
     color: white;
     border-radius: 10px;
@@ -179,8 +192,12 @@
    color: #cc3b33;
 }
 .mic-div {
-   background: #606060;
-   height: 50%;
+    background: #606060;
+    height: 60%;
+    border-radius: 40px;
+    margin: 10px;
+    margin-top: 18px;
+    margin-bottom: 3px;
 }
 
 
